@@ -1,4 +1,29 @@
-# Welcome to your organization's demo respository
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+# 🚀 Hello Web Auto Deploy
 
-The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
+This project automatically deploys a static HTML site to Google Cloud Run when you push to GitHub.
+
+---
+
+## 🌐 Features
+
+- Static HTML site
+- Docker containerized
+- GitHub Actions CI/CD
+- Auto deploy to Cloud Run
+- Zero server management
+
+---
+
+## ☁️ Requirements
+
+- Google Cloud account
+- Cloud Run enabled
+- Cloud Build enabled
+- GitHub repository secrets configured
+
+---
+
+## 🔐 GitHub Secrets
+
+Add these in:
+**GitHub → Settings → Secrets → Actions**
