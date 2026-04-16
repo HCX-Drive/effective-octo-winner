@@ -1,9 +1,70 @@
 {
-  "name": "demo-repo",
-  "version": "0.2.0",
-  "description": "A sample package.json",
-  "dependencies": {
-    "@primer/css": "17.0.1"
+  "name": "hello-web-auto-deploy",
+  "version": "1.0.0",
+  "description": "Static HTML auto-deploy app to Google Cloud Run via GitHub Actions",
+  "type": "static-web-app",
+  "runtime": "docker-nginx",
+  "entrypoint": "index.html",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
-  "license": "MIT"
+  "deploy": {
+    "provider": "google-cloud-run",
+    "region": "us-central1",
+    "allow_unauthenticated": true,
+    "service_name": "hello-web"
+  },
+  "ci_cd": {
+    "platform": "github-actions",
+    "workflow_file": ".github/workflows/deploy.yml",
+    "trigger": "push",
+    "branch": "main"
+  },
+  "cloud": {
+    "provider": "gcp",
+    "services": [
+      "cloud-run",
+      "cloud-build",
+      "container-registry"
+    ]
+  },
+  "environment_variables": {
+    "GCP_PROJECT_ID": "REPLACE_ME",
+    "REGION": "us-central1"
+  },
+  "secrets_required": [
+    "GCP_SA_KEY"
+  ],
+  "scripts": {
+    "build": "docker build -t hello-web .",
+    "deploy": "gcloud run deploy hello-web --image gcr.io/$GCP_PROJECT_ID/hello-web"
+  },
+  "repository_structure": {
+    "files": [
+      "index.html",
+      "Dockerfile",
+      "README.md",
+      ".gitignore",
+      ".github/workflows/deploy.yml"
+    ]
+  },
+  "workflow": {
+    "flow": [
+      "git push to main",
+      "github actions trigger",
+      "cloud build creates container",
+      "container pushed to registry",
+      "cloud run deploys service",
+      "live URL updated automatically"
+    ]
+  },
+  "security": {
+    "authentication": "service-account-json",
+    "iam_roles_required": [
+      "run.admin",
+      "storage.admin",
+      "cloudbuild.builds.editor"
+    ]
+  }
 }
